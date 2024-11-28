@@ -17,14 +17,14 @@ contract ScaleBuyBurn is Ownable2Step {
 
     /// @notice The total amount of ELMNT tokens used in Buy & Burn to date.
     uint256 public totalE280Used;
-    /// @notice The total amount of Element 280 tokens burned to date.
+    /// @notice The total amount of Scale tokens burned to date.
     uint256 public totalScaleBurned;
 
     /// @notice Incentive fee amount, measured in basis points (100 bps = 1%).
     uint16 public incentiveFeeBps = 30;
     /// @notice The maximum amount of E280 that can be swapped per Buy & Burn.
     uint256 public capPerSwapE280 = 800_000_000 ether;
-    /// @notice The maximum amount of DragonX/E280 that can be swapped per Buy & Burn.
+    /// @notice The maximum amount of DragonX that can be swapped per Buy & Burn.
     uint256 public capPerSwapDragonX = 2_000_000_000 ether;
     /// @notice Cooldown for Buy & Burns in seconds.
     uint32 public buyBurnInterval = 8 hours;
