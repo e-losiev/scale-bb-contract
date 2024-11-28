@@ -143,7 +143,9 @@ contract ScaleBuyBurn is Ownable2Step {
         if (dragonxBalance == 0) return currentE280Balance;
         uint256 amountToSwap = dragonxBalance > capPerSwapDragonX ? capPerSwapDragonX : dragonxBalance;
         uint256 swappedAmount = _swapDragonXforELMNT(amountToSwap, minE280Amount, deadline);
-        return currentE280Balance + swappedAmount;
+        unchecked {
+            return currentE280Balance + swappedAmount;
+        }
     }
 
     function _processIncentiveFee(uint256 titanXAmount) internal returns (uint256) {
