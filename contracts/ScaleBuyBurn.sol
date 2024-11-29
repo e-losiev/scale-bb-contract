@@ -122,20 +122,20 @@ contract ScaleBuyBurn is Ownable2Step {
 
     /// @notice Returns parameters for the next Buy & Burn call
     /// @return additionalSwap If the additional swap of DragonX -> ELMNT will be performed.
-    /// @return nextE280Swap ELMNT amount used in the next swap
-    /// @return nextDragonXSwap DragonX amount used in the next swap (if additional swap is needed).
-    /// @return nextBuyBurnTime Timestamp in seconds when next Buy & Burn will be available.
+    /// @return e280Amount ELMNT amount used in the next swap
+    /// @return dragonXAmount DragonX amount used in the next swap (if additional swap is needed).
+    /// @return nextAvailable Timestamp in seconds when next Buy & Burn will be available.
     function getBuyBurnParams()
         public
         view
-        returns (bool additionalSwap, uint256 nextE280Swap, uint256 nextDragonXSwap, uint256 nextBuyBurnTime)
+        returns (bool additionalSwap, uint256 e280Amount, uint256 dragonXAmount, uint256 nextAvailable)
     {
         uint256 e280Balance = IERC20(E280).balanceOf(address(this));
         uint256 dragonxBalance = IERC20(DRAGONX).balanceOf(address(this));
         additionalSwap = e280Balance < capPerSwapE280 && dragonxBalance > 0;
-        nextE280Swap = e280Balance > capPerSwapE280 ? capPerSwapE280 : e280Balance;
-        nextDragonXSwap = dragonxBalance > capPerSwapDragonX ? capPerSwapDragonX : dragonxBalance;
-        nextBuyBurnTime = lastBuyBurn + buyBurnInterval;
+        e280Amount = e280Balance > capPerSwapE280 ? capPerSwapE280 : e280Balance;
+        dragonXAmount = dragonxBalance > capPerSwapDragonX ? capPerSwapDragonX : dragonxBalance;
+        nextAvailable = lastBuyBurn + buyBurnInterval;
     }
 
     // -------------------------- INTERNAL FUNCTIONS ----------------------- //
