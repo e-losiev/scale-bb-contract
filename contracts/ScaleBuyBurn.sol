@@ -120,9 +120,9 @@ contract ScaleBuyBurn is Ownable2Step {
 
     // ---------------------------- VIEW FUNCTIONS ------------------------- //
 
-    /// @notice Returns parameters for the next Buy & Burn call
+    /// @notice Returns parameters for the next Buy & Burn call.
     /// @return additionalSwap If the additional swap of DragonX -> ELMNT will be performed.
-    /// @return e280Amount ELMNT amount used in the next swap
+    /// @return e280Amount ELMNT amount used in the next swap.
     /// @return dragonXAmount DragonX amount used in the next swap (if additional swap is needed).
     /// @return nextAvailable Timestamp in seconds when next Buy & Burn will be available.
     function getBuyBurnParams()
