@@ -120,22 +120,27 @@ contract ScaleBuyBurn is Ownable2Step {
 
     // ---------------------------- VIEW FUNCTIONS ------------------------- //
 
+    /// @notice Returns parameters for the next Buy & Burn call
+    /// @return additionalSwap If the additional swap of DragonX -> ELMNT will be performed.
+    /// @return nextE280Swap ELMNT amount used in the next swap
+    /// @return nextDragonXSwap DragonX amount used in the next swap (if additional swap is needed).
+    /// @return nextBuyBurnTime Timestamp in seconds when next Buy & Burn will be available.
     function getBuyBurnParams()
         public
         view
-        returns (bool additionalSwap, uint256 nextE280Swap, uint256 nextDragonXSwap, uint256 nextBuyBurn)
+        returns (bool additionalSwap, uint256 nextE280Swap, uint256 nextDragonXSwap, uint256 nextBuyBurnTime)
     {
         uint256 e280Balance = IERC20(E280).balanceOf(address(this));
         uint256 dragonxBalance = IERC20(DRAGONX).balanceOf(address(this));
         additionalSwap = e280Balance < capPerSwapE280 && dragonxBalance > 0;
         nextE280Swap = e280Balance > capPerSwapE280 ? capPerSwapE280 : e280Balance;
         nextDragonXSwap = dragonxBalance > capPerSwapDragonX ? capPerSwapDragonX : dragonxBalance;
-        nextBuyBurn = lastBuyBurn + buyBurnInterval;
+        nextBuyBurnTime = lastBuyBurn + buyBurnInterval;
     }
 
     // -------------------------- INTERNAL FUNCTIONS ----------------------- //
 
-   function _handleDragonXBalanceCheck(uint256 currentE280Balance, uint256 minE280Amount, uint256 deadline)
+    function _handleDragonXBalanceCheck(uint256 currentE280Balance, uint256 minE280Amount, uint256 deadline)
         internal
         returns (uint256)
     {
@@ -148,11 +153,11 @@ contract ScaleBuyBurn is Ownable2Step {
         }
     }
 
-    function _processIncentiveFee(uint256 titanXAmount) internal returns (uint256) {
-        uint256 incentiveFee = titanXAmount * incentiveFeeBps / BPS_BASE;
+    function _processIncentiveFee(uint256 e280Amount) internal returns (uint256) {
+        uint256 incentiveFee = e280Amount * incentiveFeeBps / BPS_BASE;
         IERC20(E280).safeTransfer(msg.sender, incentiveFee);
         unchecked {
-            return titanXAmount - incentiveFee;
+            return e280Amount - incentiveFee;
         }
     }
 
@@ -168,14 +173,17 @@ contract ScaleBuyBurn is Ownable2Step {
         );
     }
 
-    function _swapDragonXforELMNT(uint256 amountIn, uint256 minAmountOut, uint256 deadline) internal returns (uint256) {
+    function _swapDragonXforELMNT(uint256 amountIn, uint256 minAmountOut, uint256 deadline)
+        internal
+        returns (uint256)
+    {
         IERC20(DRAGONX).safeIncreaseAllowance(UNISWAP_V2_ROUTER, amountIn);
 
         address[] memory path = new address[](2);
         path[0] = DRAGONX;
         path[1] = E280;
 
-        uint256[] memory amounts =  IUniswapV2Router02(UNISWAP_V2_ROUTER).swapExactTokensForTokens(
+        uint256[] memory amounts = IUniswapV2Router02(UNISWAP_V2_ROUTER).swapExactTokensForTokens(
             amountIn, minAmountOut, path, address(this), deadline
         );
 
