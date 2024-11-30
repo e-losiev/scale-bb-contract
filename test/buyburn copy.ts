@@ -36,9 +36,9 @@ describe("SCALE BUY BURN", function () {
             expect(nextDragonXSwap).to.eq(0);
             expect(nextBuyBurn).to.eq(buyBurnInterval);
 
-            // const totalScaleBurnedToDate = await buyburn.totalScaleBurned();
-            // const totalHeliosBurnedToDate = await buyburn.totalHeliosBurned();
-            // const totalE280UsedToDate = await buyburn.totalE280Used();
+            const totalScaleBurnedToDate = await buyburn.totalScaleBurned();
+            const totalHeliosBurnedToDate = await buyburn.totalHeliosBurned();
+            const totalE280UsedToDate = await buyburn.totalE280Used();
 
             const incentiveFee = calculateBPS(nextE280Swap, 30);
             const allocationAfterIncentive = nextE280Swap - incentiveFee;
@@ -59,10 +59,10 @@ describe("SCALE BUY BURN", function () {
             );
             const timestamp = await time.latest();
 
-            // expect(await buyburn.totalE280Used()).to.eq(totalE280UsedToDate + nextE280Swap);
+            expect(await buyburn.totalE280Used()).to.eq(totalE280UsedToDate + nextE280Swap);
             expect(await buyburn.lastBuyBurn()).to.eq(timestamp);
-            // expect(await buyburn.totalScaleBurned()).to.approximately(totalScaleBurnedToDate + scaleAfterTax, calculatePercentage(scaleAfterTax, 1));
-            // expect(await buyburn.totalHeliosBurned()).to.eq(totalHeliosBurnedToDate + heliosAmountOut);
+            expect(await buyburn.totalScaleBurned()).to.approximately(totalScaleBurnedToDate + scaleAfterTax, calculatePercentage(scaleAfterTax, 1));
+            expect(await buyburn.totalHeliosBurned()).to.eq(totalHeliosBurnedToDate + heliosAmountOut);
             await expect(buyburn.connect(user).buyAndBurn(0, 0, 0, 0)).to.be.revertedWithCustomError(buyburn, "Cooldown");
         });
         it("Should perform a buy burn using dragonx only - dragonx check", async function () {
@@ -75,9 +75,9 @@ describe("SCALE BUY BURN", function () {
             expect(nextDragonXSwap).to.eq(capPerSwapDragonX);
             expect(nextBuyBurn).to.eq(buyBurnInterval);
 
-            // const totalScaleBurnedToDate = await buyburn.totalScaleBurned();
-            // const totalHeliosBurnedToDate = await buyburn.totalHeliosBurned();
-            // const totalE280UsedToDate = await buyburn.totalE280Used();
+            const totalScaleBurnedToDate = await buyburn.totalScaleBurned();
+            const totalHeliosBurnedToDate = await buyburn.totalHeliosBurned();
+            const totalE280UsedToDate = await buyburn.totalE280Used();
 
             const e280AmountOut = await getQuoteV2(dragonx.target, e280.target, nextDragonXSwap);
             expect(e280AmountOut).to.be.greaterThan(capPerSwapE280);
@@ -101,10 +101,10 @@ describe("SCALE BUY BURN", function () {
             );
             const timestamp = await time.latest();
 
-            // expect(await buyburn.totalE280Used()).to.eq(totalE280UsedToDate + capPerSwapE280);
+            expect(await buyburn.totalE280Used()).to.eq(totalE280UsedToDate + capPerSwapE280);
             expect(await buyburn.lastBuyBurn()).to.eq(timestamp);
-            // expect(await buyburn.totalScaleBurned()).to.approximately(totalScaleBurnedToDate + scaleAfterTax, calculatePercentage(scaleAfterTax, 1));
-            // expect(await buyburn.totalHeliosBurned()).to.eq(totalHeliosBurnedToDate + heliosAmountOut);
+            expect(await buyburn.totalScaleBurned()).to.approximately(totalScaleBurnedToDate + scaleAfterTax, calculatePercentage(scaleAfterTax, 1));
+            expect(await buyburn.totalHeliosBurned()).to.eq(totalHeliosBurnedToDate + heliosAmountOut);
             await expect(buyburn.connect(user).buyAndBurn(0, 0, 0, 0)).to.be.revertedWithCustomError(buyburn, "Cooldown");
         });
         it("Should perform a buy burn using dragonx only - e280 check", async function () {
@@ -117,9 +117,9 @@ describe("SCALE BUY BURN", function () {
             expect(nextDragonXSwap).to.eq(capPerSwapDragonX);
             expect(nextBuyBurn).to.eq(buyBurnInterval);
 
-            // const totalScaleBurnedToDate = await buyburn.totalScaleBurned();
-            // const totalHeliosBurnedToDate = await buyburn.totalHeliosBurned();
-            // const totalE280UsedToDate = await buyburn.totalE280Used();
+            const totalScaleBurnedToDate = await buyburn.totalScaleBurned();
+            const totalHeliosBurnedToDate = await buyburn.totalHeliosBurned();
+            const totalE280UsedToDate = await buyburn.totalE280Used();
 
             const e280AmountOut = await getQuoteV2(dragonx.target, e280.target, nextDragonXSwap);
             expect(e280AmountOut).to.be.greaterThan(capPerSwapE280);
@@ -143,10 +143,10 @@ describe("SCALE BUY BURN", function () {
             );
             const timestamp = await time.latest();
 
-            // expect(await buyburn.totalE280Used()).to.eq(totalE280UsedToDate + capPerSwapE280);
+            expect(await buyburn.totalE280Used()).to.eq(totalE280UsedToDate + capPerSwapE280);
             expect(await buyburn.lastBuyBurn()).to.eq(timestamp);
-            // expect(await buyburn.totalScaleBurned()).to.approximately(totalScaleBurnedToDate + scaleAfterTax, calculatePercentage(scaleAfterTax, 1));
-            // expect(await buyburn.totalHeliosBurned()).to.eq(totalHeliosBurnedToDate + heliosAmountOut);
+            expect(await buyburn.totalScaleBurned()).to.approximately(totalScaleBurnedToDate + scaleAfterTax, calculatePercentage(scaleAfterTax, 1));
+            expect(await buyburn.totalHeliosBurned()).to.eq(totalHeliosBurnedToDate + heliosAmountOut);
             await expect(buyburn.connect(user).buyAndBurn(0, 0, 0, 0)).to.be.revertedWithCustomError(buyburn, "Cooldown");
         });
         it("Should perform a buy burn using DragonX addition - dragonx check", async function () {
@@ -159,9 +159,9 @@ describe("SCALE BUY BURN", function () {
             expect(nextDragonXSwap).to.eq(capPerSwapDragonX);
             expect(nextBuyBurn).to.eq(buyBurnInterval);
 
-            // const totalScaleBurnedToDate = await buyburn.totalScaleBurned();
-            // const totalHeliosBurnedToDate = await buyburn.totalHeliosBurned();
-            // const totalE280UsedToDate = await buyburn.totalE280Used();
+            const totalScaleBurnedToDate = await buyburn.totalScaleBurned();
+            const totalHeliosBurnedToDate = await buyburn.totalHeliosBurned();
+            const totalE280UsedToDate = await buyburn.totalE280Used();
 
             const e280AmountOut = await getQuoteV2(dragonx.target, e280.target, nextDragonXSwap);
             expect(e280AmountOut).to.be.greaterThan(capPerSwapE280);
@@ -185,10 +185,10 @@ describe("SCALE BUY BURN", function () {
             );
             const timestamp = await time.latest();
 
-            // expect(await buyburn.totalE280Used()).to.eq(totalE280UsedToDate + capPerSwapE280);
+            expect(await buyburn.totalE280Used()).to.eq(totalE280UsedToDate + capPerSwapE280);
             expect(await buyburn.lastBuyBurn()).to.eq(timestamp);
-            // expect(await buyburn.totalScaleBurned()).to.approximately(totalScaleBurnedToDate + scaleAfterTax, calculatePercentage(scaleAfterTax, 1));
-            // expect(await buyburn.totalHeliosBurned()).to.eq(totalHeliosBurnedToDate + heliosAmountOut);
+            expect(await buyburn.totalScaleBurned()).to.approximately(totalScaleBurnedToDate + scaleAfterTax, calculatePercentage(scaleAfterTax, 1));
+            expect(await buyburn.totalHeliosBurned()).to.eq(totalHeliosBurnedToDate + heliosAmountOut);
             await expect(buyburn.connect(user).buyAndBurn(0, 0, 0, 0)).to.be.revertedWithCustomError(buyburn, "Cooldown");
         });
         it("Should perform a buy burn using DragonX addition - e280 check", async function () {
@@ -201,9 +201,9 @@ describe("SCALE BUY BURN", function () {
             expect(nextDragonXSwap).to.eq(capPerSwapDragonX);
             expect(nextBuyBurn).to.eq(buyBurnInterval);
 
-            // const totalScaleBurnedToDate = await buyburn.totalScaleBurned();
-            // const totalHeliosBurnedToDate = await buyburn.totalHeliosBurned();
-            // const totalE280UsedToDate = await buyburn.totalE280Used();
+            const totalScaleBurnedToDate = await buyburn.totalScaleBurned();
+            const totalHeliosBurnedToDate = await buyburn.totalHeliosBurned();
+            const totalE280UsedToDate = await buyburn.totalE280Used();
 
             const e280AmountOut = await getQuoteV2(dragonx.target, e280.target, nextDragonXSwap);
             expect(e280AmountOut).to.be.greaterThan(capPerSwapE280);
@@ -227,13 +227,13 @@ describe("SCALE BUY BURN", function () {
             );
             const timestamp = await time.latest();
 
-            // expect(await buyburn.totalE280Used()).to.eq(totalE280UsedToDate + capPerSwapE280);
+            expect(await buyburn.totalE280Used()).to.eq(totalE280UsedToDate + capPerSwapE280);
             expect(await buyburn.lastBuyBurn()).to.eq(timestamp);
-            // expect(await buyburn.totalScaleBurned()).to.approximately(totalScaleBurnedToDate + scaleAfterTax, calculatePercentage(scaleAfterTax, 1));
-            // expect(await buyburn.totalHeliosBurned()).to.eq(totalHeliosBurnedToDate + heliosAmountOut);
+            expect(await buyburn.totalScaleBurned()).to.approximately(totalScaleBurnedToDate + scaleAfterTax, calculatePercentage(scaleAfterTax, 1));
+            expect(await buyburn.totalHeliosBurned()).to.eq(totalHeliosBurnedToDate + heliosAmountOut);
             await expect(buyburn.connect(user).buyAndBurn(0, 0, 0, 0)).to.be.revertedWithCustomError(buyburn, "Cooldown");
         });
-        it("Should perform consecutive buyBurns", async function () {
+        it("Should consecutive buyBurns", async function () {
             const { buyburn, user, e280, helios, dragonx, scale, capPerSwapE280, capPerSwapDragonX, buyBurnInterval } = await loadFixture(
                 buyBurnFullFundedWithBoth
             );
@@ -244,9 +244,9 @@ describe("SCALE BUY BURN", function () {
                 expect(nextDragonXSwap).to.eq(capPerSwapDragonX);
                 expect(nextBuyBurn).to.eq(buyBurnInterval);
 
-                // const totalScaleBurnedToDate = await buyburn.totalScaleBurned();
-                // const totalHeliosBurnedToDate = await buyburn.totalHeliosBurned();
-                // const totalE280UsedToDate = await buyburn.totalE280Used();
+                const totalScaleBurnedToDate = await buyburn.totalScaleBurned();
+                const totalHeliosBurnedToDate = await buyburn.totalHeliosBurned();
+                const totalE280UsedToDate = await buyburn.totalE280Used();
 
                 const incentiveFee = calculateBPS(nextE280Swap, 30);
                 const allocationAfterIncentive = nextE280Swap - incentiveFee;
@@ -267,13 +267,13 @@ describe("SCALE BUY BURN", function () {
                 );
                 const timestamp = await time.latest();
 
-                // expect(await buyburn.totalE280Used()).to.eq(totalE280UsedToDate + capPerSwapE280);
+                expect(await buyburn.totalE280Used()).to.eq(totalE280UsedToDate + capPerSwapE280);
                 expect(await buyburn.lastBuyBurn()).to.eq(timestamp);
-                // expect(await buyburn.totalScaleBurned()).to.approximately(
-                // totalScaleBurnedToDate + scaleAfterTax,
-                //     calculatePercentage(scaleAfterTax, 1)
-                // );
-                // expect(await buyburn.totalHeliosBurned()).to.eq(totalHeliosBurnedToDate + heliosAmountOut);
+                expect(await buyburn.totalScaleBurned()).to.approximately(
+                    totalScaleBurnedToDate + scaleAfterTax,
+                    calculatePercentage(scaleAfterTax, 1)
+                );
+                expect(await buyburn.totalHeliosBurned()).to.eq(totalHeliosBurnedToDate + heliosAmountOut);
 
                 await expect(buyburn.connect(user).buyAndBurn(0, 0, 0, 0)).to.be.revertedWithCustomError(buyburn, "Cooldown");
             }
@@ -284,9 +284,9 @@ describe("SCALE BUY BURN", function () {
                 expect(nextE280Swap).to.eq(capPerSwapE280 / 2n);
                 expect(nextDragonXSwap).to.eq(capPerSwapDragonX);
 
-                // const totalScaleBurnedToDate = await buyburn.totalScaleBurned();
-                // const totalHeliosBurnedToDate = await buyburn.totalHeliosBurned();
-                // const totalE280UsedToDate = await buyburn.totalE280Used();
+                const totalScaleBurnedToDate = await buyburn.totalScaleBurned();
+                const totalHeliosBurnedToDate = await buyburn.totalHeliosBurned();
+                const totalE280UsedToDate = await buyburn.totalE280Used();
 
                 const e280AmountOut = await getQuoteV2(dragonx.target, e280.target, nextDragonXSwap);
                 expect(e280AmountOut).to.be.greaterThan(capPerSwapE280);
@@ -310,13 +310,13 @@ describe("SCALE BUY BURN", function () {
                 );
                 const timestamp = await time.latest();
 
-                // expect(await buyburn.totalE280Used()).to.eq(totalE280UsedToDate + capPerSwapE280);
+                expect(await buyburn.totalE280Used()).to.eq(totalE280UsedToDate + capPerSwapE280);
                 expect(await buyburn.lastBuyBurn()).to.eq(timestamp);
-                // expect(await buyburn.totalScaleBurned()).to.approximately(
-                // totalScaleBurnedToDate + scaleAfterTax,
-                //     calculatePercentage(scaleAfterTax, 1)
-                // );
-                // expect(await buyburn.totalHeliosBurned()).to.eq(totalHeliosBurnedToDate + heliosAmountOut);
+                expect(await buyburn.totalScaleBurned()).to.approximately(
+                    totalScaleBurnedToDate + scaleAfterTax,
+                    calculatePercentage(scaleAfterTax, 1)
+                );
+                expect(await buyburn.totalHeliosBurned()).to.eq(totalHeliosBurnedToDate + heliosAmountOut);
 
                 await expect(buyburn.connect(user).buyAndBurn(0, 0, 0, 0)).to.be.revertedWithCustomError(buyburn, "Cooldown");
             }
@@ -327,9 +327,9 @@ describe("SCALE BUY BURN", function () {
                 expect(nextE280Swap).to.eq(capPerSwapE280);
                 expect(nextDragonXSwap).to.eq(capPerSwapDragonX);
 
-                // const totalScaleBurnedToDate = await buyburn.totalScaleBurned();
-                // const totalHeliosBurnedToDate = await buyburn.totalHeliosBurned();
-                // const totalE280UsedToDate = await buyburn.totalE280Used();
+                const totalScaleBurnedToDate = await buyburn.totalScaleBurned();
+                const totalHeliosBurnedToDate = await buyburn.totalHeliosBurned();
+                const totalE280UsedToDate = await buyburn.totalE280Used();
 
                 const incentiveFee = calculateBPS(nextE280Swap, 30);
                 const allocationAfterIncentive = nextE280Swap - incentiveFee;
@@ -350,27 +350,15 @@ describe("SCALE BUY BURN", function () {
                 );
                 const timestamp = await time.latest();
 
-                // expect(await buyburn.totalE280Used()).to.eq(totalE280UsedToDate + capPerSwapE280);
+                expect(await buyburn.totalE280Used()).to.eq(totalE280UsedToDate + capPerSwapE280);
                 expect(await buyburn.lastBuyBurn()).to.eq(timestamp);
-                // expect(await buyburn.totalScaleBurned()).to.approximately(
-                // totalScaleBurnedToDate + scaleAfterTax,
-                //     calculatePercentage(scaleAfterTax, 1)
-                // );
-                // expect(await buyburn.totalHeliosBurned()).to.eq(totalHeliosBurnedToDate + heliosAmountOut);
+                expect(await buyburn.totalScaleBurned()).to.approximately(
+                    totalScaleBurnedToDate + scaleAfterTax,
+                    calculatePercentage(scaleAfterTax, 1)
+                );
+                expect(await buyburn.totalHeliosBurned()).to.eq(totalHeliosBurnedToDate + heliosAmountOut);
                 await expect(buyburn.connect(user).buyAndBurn(0, 0, 0, 0)).to.be.revertedWithCustomError(buyburn, "Cooldown");
             }
-            await time.increase(buyBurnInterval);
-            const req = await buyburn.connect(user).buyAndBurn(0, 0, 0, await getDeadline());
-            const res = await req.wait();
-            console.log(res?.gasUsed);
-        });
-        it("Should perform a buy burn using DragonX addition - e280 check", async function () {
-            const { buyburn, user, e280, helios, dragonx, scale, capPerSwapE280, capPerSwapDragonX, buyBurnInterval } = await loadFixture(
-                buyBurnFundedWithBoth
-            );
-            const req = await buyburn.connect(user).buyAndBurn(0, 0, 0, await getDeadline());
-            const res = await req.wait();
-            console.log(res?.gasUsed);
         });
     });
 });

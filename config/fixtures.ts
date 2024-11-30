@@ -1,7 +1,7 @@
 import { loadFixture, time } from "@nomicfoundation/hardhat-toolbox/network-helpers";
 import { ethers } from "hardhat";
 import { fundWallet, getPrefundedWallet } from "./utils";
-import { DRAGONX, DRAGONX_HOLDER, E280, E280_ADMIN, E280_HOLDER, SCALE } from "./constants";
+import { DRAGONX, DRAGONX_HOLDER, E280, E280_ADMIN, E280_HOLDER, HELIOS, SCALE } from "./constants";
 
 export async function deployFixture() {
     const [deployer, owner, user, user2] = await ethers.getSigners();
@@ -10,6 +10,7 @@ export async function deployFixture() {
     /// Tokens
     const scale = await ethers.getContractAt("IERC20", SCALE);
     const e280 = await ethers.getContractAt("IElement280", E280);
+    const helios = await ethers.getContractAt("IERC20", HELIOS);
     const dragonx = await ethers.getContractAt("IERC20", DRAGONX);
 
     const buyburnFactory = await ethers.getContractFactory("ScaleBuyBurn");
@@ -31,6 +32,7 @@ export async function deployFixture() {
         buyburn,
         scale,
         e280,
+        helios,
         dragonx,
         deployer,
         owner,

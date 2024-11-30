@@ -6,12 +6,12 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
 import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
 import "./interfaces/IERC20Burnable.sol";
+import "./interfaces/IHelios.sol";
 import "./lib/constants.sol";
 
 /// @title Scale Buy & Burn Contract
 contract ScaleBuyBurn is Ownable2Step {
-    using SafeERC20 for IERC20;
-    using SafeERC20 for IERC20Burnable;
+    using SafeERC20 for *;
 
     // -------------------------- STATE VARIABLES -------------------------- //
 
@@ -19,6 +19,8 @@ contract ScaleBuyBurn is Ownable2Step {
     uint256 public totalE280Used;
     /// @notice The total amount of Scale tokens burned to date.
     uint256 public totalScaleBurned;
+    /// @notice The total amount of Helios tokens burned to date.
+    uint256 public totalHeliosBurned;
 
     /// @notice Incentive fee amount, measured in basis points (100 bps = 1%).
     uint16 public incentiveFeeBps = 30;
@@ -53,9 +55,10 @@ contract ScaleBuyBurn is Ownable2Step {
 
     /// @notice Buys and burns Scale tokens using Element 280 and DragonX balance.
     /// @param minScaleAmount The minimum amount out for ELMT -> SCALE swap.
+    /// @param minHeliosAmount The minimum amount out for ELMT -> Helios swap.
     /// @param minE280Amount The minimum amount out for the DragonX -> ELMNT swap (if applicalbe).
     /// @param deadline The deadline for the swaps.
-    function buyAndBurn(uint256 minScaleAmount, uint256 minE280Amount, uint256 deadline) external {
+    function buyAndBurn(uint256 minScaleAmount, uint256 minHeliosAmount, uint256 minE280Amount, uint256 deadline) external {
         if (!whitelisted[msg.sender]) revert Prohibited();
         if (block.timestamp < lastBuyBurn + buyBurnInterval) revert Cooldown();
 
@@ -68,17 +71,24 @@ contract ScaleBuyBurn is Ownable2Step {
         uint256 amountToSwap = e280Balance > capPerSwapE280 ? capPerSwapE280 : e280Balance;
         totalE280Used += amountToSwap;
         amountToSwap = _processIncentiveFee(amountToSwap);
-        _swapELMNTforScale(amountToSwap, minScaleAmount, deadline);
-        burnScale();
+        uint256 heliosAmount = amountToSwap / 10;
+        uint256 scaleAmount = amountToSwap - heliosAmount;
+        _swapELMNT(SCALE, scaleAmount, minScaleAmount, deadline);
+        _swapELMNT(HELIOS, heliosAmount, minHeliosAmount, deadline);
+        burnTokens();
         emit BuyBurn();
     }
 
-    /// @notice Burns all Scale tokens owned by Buy & Burn contractt.
-    function burnScale() public {
+    /// @notice Burns all Scale and Helios tokens owned by Buy & Burn contractt.
+    function burnTokens() public {
         IERC20Burnable scale = IERC20Burnable(SCALE);
-        uint256 amountToBurn = scale.balanceOf(address(this));
-        scale.burn(amountToBurn);
-        totalScaleBurned += amountToBurn;
+        IHelios helios = IHelios(HELIOS);
+        uint256 scaleBurnAmount = scale.balanceOf(address(this));
+        uint256 heliosBurnAmount = helios.balanceOf(address(this));
+        scale.burn(scaleBurnAmount);
+        helios.userBurnTokens(heliosBurnAmount);
+        totalScaleBurned += scaleBurnAmount;
+        totalHeliosBurned += heliosBurnAmount;
     }
 
     // ----------------------- ADMINISTRATIVE FUNCTIONS -------------------- //
@@ -161,12 +171,12 @@ contract ScaleBuyBurn is Ownable2Step {
         }
     }
 
-    function _swapELMNTforScale(uint256 amountIn, uint256 minAmountOut, uint256 deadline) internal {
+    function _swapELMNT(address tokenOut, uint256 amountIn, uint256 minAmountOut, uint256 deadline) internal {
         IERC20(E280).safeIncreaseAllowance(UNISWAP_V2_ROUTER, amountIn);
 
         address[] memory path = new address[](2);
         path[0] = E280;
-        path[1] = SCALE;
+        path[1] = tokenOut;
 
         IUniswapV2Router02(UNISWAP_V2_ROUTER).swapExactTokensForTokensSupportingFeeOnTransferTokens(
             amountIn, minAmountOut, path, address(this), deadline
