@@ -359,18 +359,6 @@ describe("SCALE BUY BURN", function () {
                 // expect(await buyburn.totalHeliosBurned()).to.eq(totalHeliosBurnedToDate + heliosAmountOut);
                 await expect(buyburn.connect(user).buyAndBurn(0, 0, 0, 0)).to.be.revertedWithCustomError(buyburn, "Cooldown");
             }
-            await time.increase(buyBurnInterval);
-            const req = await buyburn.connect(user).buyAndBurn(0, 0, 0, await getDeadline());
-            const res = await req.wait();
-            console.log(res?.gasUsed);
-        });
-        it("Should perform a buy burn using DragonX addition - e280 check", async function () {
-            const { buyburn, user, e280, helios, dragonx, scale, capPerSwapE280, capPerSwapDragonX, buyBurnInterval } = await loadFixture(
-                buyBurnFundedWithBoth
-            );
-            const req = await buyburn.connect(user).buyAndBurn(0, 0, 0, await getDeadline());
-            const res = await req.wait();
-            console.log(res?.gasUsed);
         });
     });
 });

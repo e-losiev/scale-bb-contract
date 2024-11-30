@@ -15,13 +15,6 @@ contract ScaleBuyBurn is Ownable2Step {
 
     // -------------------------- STATE VARIABLES -------------------------- //
 
-    /// @notice The total amount of ELMNT tokens used in Buy & Burn to date.
-    uint256 public totalE280Used;
-    /// @notice The total amount of Scale tokens burned to date.
-    uint256 public totalScaleBurned;
-    /// @notice The total amount of Helios tokens burned to date.
-    uint256 public totalHeliosBurned;
-
     /// @notice Incentive fee amount, measured in basis points (100 bps = 1%).
     uint16 public incentiveFeeBps = 30;
     /// @notice The maximum amount of E280 that can be swapped per Buy & Burn.
@@ -69,7 +62,6 @@ contract ScaleBuyBurn is Ownable2Step {
         }
         if (e280Balance == 0) revert NoAllocation();
         uint256 amountToSwap = e280Balance > capPerSwapE280 ? capPerSwapE280 : e280Balance;
-        totalE280Used += amountToSwap;
         amountToSwap = _processIncentiveFee(amountToSwap);
         uint256 heliosAmount = amountToSwap / 10;
         uint256 scaleAmount = amountToSwap - heliosAmount;
@@ -87,8 +79,6 @@ contract ScaleBuyBurn is Ownable2Step {
         uint256 heliosBurnAmount = helios.balanceOf(address(this));
         scale.burn(scaleBurnAmount);
         helios.userBurnTokens(heliosBurnAmount);
-        totalScaleBurned += scaleBurnAmount;
-        totalHeliosBurned += heliosBurnAmount;
     }
 
     // ----------------------- ADMINISTRATIVE FUNCTIONS -------------------- //
