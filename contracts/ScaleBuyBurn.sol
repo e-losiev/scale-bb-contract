@@ -54,14 +54,14 @@ contract ScaleBuyBurn is Ownable2Step {
     function buyAndBurn(uint256 minScaleAmount, uint256 minHeliosAmount, uint256 minE280Amount, uint256 deadline) external {
         if (!whitelisted[msg.sender]) revert Prohibited();
         if (block.timestamp < lastBuyBurn + buyBurnInterval) revert Cooldown();
-
+        uint256 _capPerSwapE280 = capPerSwapE280;
         lastBuyBurn = block.timestamp;
         uint256 e280Balance = IERC20(E280).balanceOf(address(this));
-        if (e280Balance < capPerSwapE280) {
+        if (e280Balance < _capPerSwapE280) {
             e280Balance = _handleDragonXBalanceCheck(e280Balance, minE280Amount, deadline);
         }
         if (e280Balance == 0) revert NoAllocation();
-        uint256 amountToSwap = e280Balance > capPerSwapE280 ? capPerSwapE280 : e280Balance;
+        uint256 amountToSwap = e280Balance > _capPerSwapE280 ? _capPerSwapE280 : e280Balance;
         amountToSwap = _processIncentiveFee(amountToSwap);
         uint256 heliosAmount = amountToSwap / 10;
         uint256 scaleAmount = amountToSwap - heliosAmount;
@@ -123,10 +123,10 @@ contract ScaleBuyBurn is Ownable2Step {
     /// @notice Returns parameters for the next Buy & Burn call.
     /// @return additionalSwap If the additional swap of DragonX -> ELMNT will be performed.
     /// @return e280Amount ELMNT amount used in the next swap.
-    /// @return dragonXAmount DragonX amount used in the next swap (if additional swap is needed).
+    /// @return dragonXAmount DragonX amount used in the next swap.
     /// @return nextAvailable Timestamp in seconds when next Buy & Burn will be available.
     function getBuyBurnParams()
-        public
+        external
         view
         returns (bool additionalSwap, uint256 e280Amount, uint256 dragonXAmount, uint256 nextAvailable)
     {
@@ -134,7 +134,7 @@ contract ScaleBuyBurn is Ownable2Step {
         uint256 dragonxBalance = IERC20(DRAGONX).balanceOf(address(this));
         additionalSwap = e280Balance < capPerSwapE280 && dragonxBalance > 0;
         e280Amount = e280Balance > capPerSwapE280 ? capPerSwapE280 : e280Balance;
-        dragonXAmount = dragonxBalance > capPerSwapDragonX ? capPerSwapDragonX : dragonxBalance;
+        if (additionalSwap) dragonXAmount = dragonxBalance > capPerSwapDragonX ? capPerSwapDragonX : dragonxBalance;
         nextAvailable = lastBuyBurn + buyBurnInterval;
     }
 

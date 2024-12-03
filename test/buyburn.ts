@@ -241,7 +241,7 @@ describe("SCALE BUY BURN", function () {
                 const [additionalSwap, nextE280Swap, nextDragonXSwap, nextBuyBurn] = await buyburn.getBuyBurnParams();
                 expect(additionalSwap).to.eq(false);
                 expect(nextE280Swap).to.eq(capPerSwapE280);
-                expect(nextDragonXSwap).to.eq(capPerSwapDragonX);
+                expect(nextDragonXSwap).to.eq(0);
                 expect(nextBuyBurn).to.eq(buyBurnInterval);
 
                 // const totalScaleBurnedToDate = await buyburn.totalScaleBurned();
@@ -325,7 +325,7 @@ describe("SCALE BUY BURN", function () {
                 const [additionalSwap, nextE280Swap, nextDragonXSwap] = await buyburn.getBuyBurnParams();
                 expect(additionalSwap).to.eq(false);
                 expect(nextE280Swap).to.eq(capPerSwapE280);
-                expect(nextDragonXSwap).to.eq(capPerSwapDragonX);
+                expect(nextDragonXSwap).to.eq(0);
 
                 // const totalScaleBurnedToDate = await buyburn.totalScaleBurned();
                 // const totalHeliosBurnedToDate = await buyburn.totalHeliosBurned();
