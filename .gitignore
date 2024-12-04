@@ -1,5 +1,65 @@
-node_modules
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+vendor/
+bower_components/
+build/
+dist/
+.cache/
+out/
+coverage/
+
+# Environment variables
 .env
+.env.* # for cases where you use .env.local, .env.production, etc.
+
+# Logs
+*.log
+logs/
+*.log.*
+*.pid
+*.seed
+*.pid.lock
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+*.swn
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.old
+*.orig
+*.rej
+*.sublime-workspace
+
+# Testing
+jest/
+*.test-results.xml
+
+# Build artifacts
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Package managers
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
 
 # Hardhat files
 /cache

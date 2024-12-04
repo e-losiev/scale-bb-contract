@@ -19,6 +19,9 @@
     "hardhat": "^2.19.4"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^4.0.0"
+    "@nomicfoundation/hardhat-foundry": "^1.1.3",
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "prettier": "^3.4.1",
+    "prettier-plugin-solidity": "^1.4.1"
   }
 }
